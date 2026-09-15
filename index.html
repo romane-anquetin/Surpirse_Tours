@@ -64,28 +64,29 @@
 
   .title-screen{
     text-align:center;
+    padding: 20px 0 10px 0;
   }
   .eyebrow-mark{
     font-family:'Fraunces', serif;
     font-size:15px;
-    letter-spacing:0.02em;
+    letter-spacing:0.03em;
     color: var(--gold-dim);
-    margin-bottom:6px;
+    margin-bottom:22px;
   }
   h1{
     font-family:'Fraunces', serif;
     font-weight:700;
     font-size: clamp(32px, 6vw, 48px);
-    line-height:1.08;
-    margin: 0 0 18px 0;
+    line-height:1.22;
+    margin: 0 0 32px 0;
     color: var(--parchment);
   }
   .intro-text{
     font-size:16px;
-    line-height:1.6;
+    line-height:1.8;
     color: rgba(237,227,199,0.75);
-    max-width: 440px;
-    margin: 0 auto 34px auto;
+    max-width: 420px;
+    margin: 0 auto 46px auto;
   }
 
   .btn{
@@ -173,6 +174,11 @@
     margin: 0 auto 30px auto;
   }
 
+  .end-highlight{
+    color: #FFFFFF;
+    font-weight:700;
+  }
+
   .hidden{ display:none; }
 
   footer{
@@ -213,8 +219,8 @@
   <div class="end-screen win hidden" id="winScreen">
     <span class="end-icon">🏆</span>
     <h2 class="end-title">Tu as trouvé la sortie, bravo !</h2>
-    <p class="end-text">Pour autant, ton calvère ne fait que commencer. Tu n'as pas trouvé le trésoir mais seulement un indice t'y menant :
-    Quelque part dans une collection de savoir, tu trouveras ce qui nous représente. Puisse t'il t'aider à trouver ton chemin.
+    <p class="end-text">Pour autant, ton calvère ne fait que commencer. Tu n'as pas trouvé le trésoir mais seulement un indice t'y menant :<br><br>
+    <strong class="end-highlight">Quelque part dans une collection de savoir, tu trouveras ce qui nous représente. Puisse t'il t'aider à trouver ton chemin.</strong>
     </p>
     <button class="btn primary" id="retryBtnWin">Rejouer</button>
   </div>
@@ -225,7 +231,8 @@
     <p class="end-text">
       Il n'y avait pas qu'une seule sortie à ce labyrinthe. Tu as pris une autre route que celle que j'avais tracée en premier,
       et pourtant, comme pour beaucoup de choses entre nous, elle mène exactement au même endroit. Peu importe le chemin choisi,
-      on finit toujours par se retrouver.
+      on finit toujours par se retrouver. Ceci est ton bonus secret, rien que pour toi : bravo d'avoir été assez curieux pour
+      chercher plus loin que la sortie évidente.
     </p>
     <button class="btn primary" id="retryBtnSecret">Rejouer</button>
   </div>

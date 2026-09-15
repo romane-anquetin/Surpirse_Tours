@@ -140,17 +140,18 @@
     font-family:'Inter', sans-serif;
     font-size:15.5px;
     cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:12px;
     transition: border-color 0.2s ease, background 0.2s ease;
   }
   .option:hover{
     border-color: var(--gold);
     background: rgba(201,162,75,0.08);
   }
-  .option-letter{
-    display:inline-block;
-    width:22px;
-    color: var(--gold);
-    font-weight:600;
+  .option-emoji{
+    font-size:20px;
+    line-height:1;
   }
 
   .end-screen{ text-align:center; }
@@ -163,6 +164,7 @@
   }
   .end-screen.dead .end-title{ color: var(--ember); }
   .end-screen.win .end-title{ color: var(--gold); }
+  .end-screen.secret .end-title{ color: var(--teal); }
   .end-text{
     font-size:16px;
     line-height:1.6;
@@ -217,6 +219,17 @@
     <button class="btn primary" id="retryBtnWin">Rejouer</button>
   </div>
 
+  <div class="end-screen secret hidden" id="secretScreen">
+    <span class="end-icon">✨</span>
+    <h2 class="end-title">Tu as trouvé le chemin caché</h2>
+    <p class="end-text">
+      Il n'y avait pas qu'une seule sortie à ce labyrinthe. Tu as pris une autre route que celle que j'avais tracée en premier,
+      et pourtant, comme pour beaucoup de choses entre nous, elle mène exactement au même endroit. Peu importe le chemin choisi,
+      on finit toujours par se retrouver.
+    </p>
+    <button class="btn primary" id="retryBtnSecret">Rejouer</button>
+  </div>
+
   <footer></footer>
 </div>
 
@@ -225,92 +238,92 @@ const NODES = {
   start: {
     question: "Question 1",
     options: [
-      { letter: "A", text: "Paris - 96.28.6", next: "q2a" },
-      { letter: "B", text: "Asuncion - 14.22.5", next: "q2b" }
+      { emoji: "🗼", text: "Paris - 96.28.6", next: "q2a" },
+      { emoji: "🌎", text: "Asuncion - 14.22.5", next: "q2b" }
     ]
   },
   q2a: {
     question: "Question 2",
     options: [
-      { letter: "C", text: "Cuisiner à deux - 97.21.2", next: "q4a" },
-      { letter: "D", text: "Cuisiner pour l'autre - 137.18.6", next: "dead" }
+      { emoji: "🍳", text: "Cuisiner à deux - 97.21.2", next: "q4a" },
+      { emoji: "🍽️", text: "Cuisiner pour l'autre - 137.18.6", next: "dead" }
     ]
   },
   q2b: {
     question: "Question 3",
     options: [
-      { letter: "E", text: "M&M's crispy - 324.7.1", next: "dead" },
-      { letter: "F", text: "Schokonbons - 497.10.4", next: "q5b" }
+      { emoji: "🍬", text: "M&M's crispy - 324.7.1", next: "dead" },
+      { emoji: "🍫", text: "Schokonbons - 497.10.4", next: "q5b" }
     ]
   },
   q4a: {
     question: "Question 4",
     options: [
-      { letter: "G", text: "Sieste en câlin - 103.1.4", next: "q6a" },
-      { letter: "H", text: "Nuit en câlin - 15.29.9", next: "dead" }
+      { emoji: "😴", text: "Sieste en câlin - 103.1.4", next: "q6a" },
+      { emoji: "🌙", text: "Nuit en câlin - 15.29.9", next: "dead" }
     ]
   },
   q5b: {
     question: "Question 5",
     options: [
-      { letter: "I", text: "Tractions lestées - 478.1.11", next: "dead" },
-      { letter: "J", text: "Dips lestées - 406.18.3", next: "q7b" }
+      { emoji: "🏋️", text: "Tractions lestées - 478.1.11", next: "dead" },
+      { emoji: "💪", text: "Dips lestées - 406.18.3", next: "q7b" }
     ]
   },
   q6a: {
     question: "Question 6",
     options: [
-      { letter: "K", text: "Petit chat mignon - 80.15.4", next: "dead" },
-      { letter: "L", text: "Gros doggy mignon - 412.2.5", next: "q8a" }
+      { emoji: "🐱", text: "Petit chat mignon - 80.15.4", next: "dead" },
+      { emoji: "🐶", text: "Gros doggy mignon - 412.2.5", next: "q8a" }
     ]
   },
   q7b: {
     question: "Question 7",
     options: [
-      { letter: "M", text: "Être ronchonchon - 23.30.6", next: "dead" },
-      { letter: "N", text: "Ronchonchonner - 412.10.4", next: "q9b" }
+      { emoji: "😤", text: "Être ronchonchon - 23.30.6", next: "dead" },
+      { emoji: "😠", text: "Ronchonchonner - 412.10.4", next: "q9b" }
     ]
   },
   q8a: {
     question: "Question 8",
     options: [
-      { letter: "O", text: "Regarder les étoiles - 200.9.9", next: "dead" },
-      { letter: "P", text: "Regarder les nuages - 11.16.3", next: "q10a" }
+      { emoji: "⭐", text: "Regarder les étoiles - 200.9.9", next: "dead" },
+      { emoji: "☁️", text: "Regarder les nuages - 11.16.3", next: "q10a" }
     ]
   },
   q9b: {
     question: "Question 9",
     options: [
-      { letter: "Q", text: "Apprendre quelque chose à l'autre - 289.10.17", next: "dead" },
-      { letter: "R", text: "Apprendre quelque chose de nouveau ensemble - 13.14.10", next: "q11b" }
+      { emoji: "🎓", text: "Apprendre quelque chose à l'autre - 289.10.17", next: "dead" },
+      { emoji: "📚", text: "Apprendre quelque chose de nouveau ensemble - 13.14.10", next: "q11b" }
     ]
   },
   q10a: {
     question: "Question 10",
     options: [
-      { letter: "S", text: "Faire des bisous de 15 minutes - 72.20.1", next: "dead" },
-      { letter: "T", text: "Faire 30 minutes de câlins pour se réveiller - 439.8.8", next: "q12a" }
+      { emoji: "💋", text: "Faire des bisous de 15 minutes - 72.20.1", next: "dead" },
+      { emoji: "🤗", text: "Faire 30 minutes de câlins pour se réveiller - 439.8.8", next: "q12a" }
     ]
   },
   q11b: {
     question: "Question 11",
     options: [
-      { letter: "U", text: "Clair Obscur - 399.17.11", next: "dead" },
-      { letter: "V", text: "Professeur Layton - 12.1.1", next: "q13b" }
+      { emoji: "🎮", text: "Clair Obscur - 399.17.11", next: "dead" },
+      { emoji: "🧩", text: "Professeur Layton - 12.1.1", next: "q13b" }
     ]
   },
   q12a: {
     question: "Question 12",
     options: [
-      { letter: "W", text: "Si c'était à refaire, jamais - 107.7.20", next: "dead" },
-      { letter: "X", text: "Si c'était à refaire, je le referai - 218.17.2", next: "win" }
+      { emoji: "🚫", text: "Si c'était à refaire, jamais - 107.7.20", next: "dead" },
+      { emoji: "❤️", text: "Si c'était à refaire, je le referai - 218.17.2", next: "win" }
     ]
   },
   q13b: {
     question: "Question 13",
     options: [
-      { letter: "Y", text: "Ensemble à Barcelone - 253.11.2,5", next: "dead" },
-      { letter: "Z", text: "Ensemble à Paris - 404.36.2", next: "dead" }
+      { emoji: "🏖️", text: "Ensemble à Barcelone - 253.11.2,5", next: "secret" },
+      { emoji: "🇫🇷", text: "Ensemble à Paris - 404.36.2", next: "dead" }
     ]
   }
 };
@@ -321,6 +334,7 @@ const titleScreen = document.getElementById('titleScreen');
 const questionCard = document.getElementById('questionCard');
 const deadScreen = document.getElementById('deadScreen');
 const winScreen = document.getElementById('winScreen');
+const secretScreen = document.getElementById('secretScreen');
 const questionText = document.getElementById('questionText');
 const optionsContainer = document.getElementById('optionsContainer');
 const trail = document.getElementById('trail');
@@ -347,7 +361,7 @@ function updateTrail(){
 }
 
 function showScreen(el){
-  [titleScreen, questionCard, deadScreen, winScreen].forEach(s => s.classList.add('hidden'));
+  [titleScreen, questionCard, deadScreen, winScreen, secretScreen].forEach(s => s.classList.add('hidden'));
   el.classList.remove('hidden');
   if(el === titleScreen){
     trail.classList.add('hidden');
@@ -365,7 +379,7 @@ function renderNode(nodeId){
   node.options.forEach(opt => {
     const btn = document.createElement('button');
     btn.className = 'option';
-    btn.innerHTML = `<span class="option-letter">${opt.letter}</span>${opt.text}`;
+    btn.innerHTML = `<span class="option-emoji">${opt.emoji}</span><span>${opt.text}</span>`;
     btn.addEventListener('click', () => handleChoice(opt.next));
     optionsContainer.appendChild(btn);
   });
@@ -384,6 +398,12 @@ function handleChoice(next){
     showScreen(winScreen);
     return;
   }
+  if(next === 'secret'){
+    stepCount = TOTAL_STEPS;
+    updateTrail();
+    showScreen(secretScreen);
+    return;
+  }
   stepCount++;
   renderNode(next);
 }
@@ -397,6 +417,9 @@ function startGame(){
 document.getElementById('startBtn').addEventListener('click', startGame);
 document.getElementById('retryBtnDead').addEventListener('click', startGame);
 document.getElementById('retryBtnWin').addEventListener('click', () => {
+  showScreen(titleScreen);
+});
+document.getElementById('retryBtnSecret').addEventListener('click', () => {
   showScreen(titleScreen);
 });
 

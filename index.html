@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Sentier du Trésor Perdu</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --bg-deep: #10201A;
+    --bg-panel: #172C23;
+    --parchment: #EDE3C7;
+    --gold: #C9A24B;
+    --gold-dim: #8B733A;
+    --ember: #B4472E;
+    --teal: #3F7D68;
+    --line: rgba(237,227,199,0.14);
+    --shadow: rgba(0,0,0,0.45);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(201,162,75,0.10), transparent 55%),
+      radial-gradient(ellipse at 100% 110%, rgba(63,125,104,0.14), transparent 55%),
+      var(--bg-deep);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 32px 16px;
+  }
+
+  .stage{
+    width:100%;
+    max-width:640px;
+  }
+
+  .trail{
+    display:flex;
+    gap:6px;
+    justify-content:center;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+  }
+  .trail-node{
+    width:10px;height:10px;
+    border-radius:50%;
+    background: rgba(237,227,199,0.15);
+    border:1px solid var(--line);
+    transition: background 0.4s ease, transform 0.3s ease;
+  }
+  .trail-node.done{ background: var(--gold); border-color: var(--gold); }
+  .trail-node.current{
+    background: var(--parchment);
+    transform: scale(1.3);
+  }
+
+  .title-screen{
+    text-align:center;
+  }
+  .eyebrow-mark{
+    font-family:'Fraunces', serif;
+    font-size:15px;
+    letter-spacing:0.02em;
+    color: var(--gold-dim);
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size: clamp(32px, 6vw, 48px);
+    line-height:1.08;
+    margin: 0 0 18px 0;
+    color: var(--parchment);
+  }
+  .intro-text{
+    font-size:16px;
+    line-height:1.6;
+    color: rgba(237,227,199,0.75);
+    max-width: 440px;
+    margin: 0 auto 34px auto;
+  }
+
+  .btn{
+    font-family:'Inter', sans-serif;
+    font-size:15px;
+    font-weight:600;
+    padding: 14px 30px;
+    border-radius: 3px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    cursor:pointer;
+    letter-spacing:0.01em;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+  }
+  .btn:hover{ background: var(--gold); color: var(--bg-deep); transform: translateY(-1px); }
+  .btn:active{ transform: translateY(0); }
+  .btn.primary{ background: var(--gold); color: var(--bg-deep); }
+  .btn.primary:hover{ background:#DDB868; }
+
+  .card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 36px 32px;
+    box-shadow: 0 18px 40px var(--shadow);
+    animation: rise 0.45s ease;
+  }
+  @keyframes rise{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  .step-label{
+    font-family:'Fraunces', serif;
+    font-size:14px;
+    color: var(--gold-dim);
+    margin-bottom:10px;
+  }
+  .question-text{
+    font-family:'Fraunces', serif;
+    font-size: clamp(20px, 3.4vw, 26px);
+    line-height:1.35;
+    margin: 0 0 28px 0;
+    color: var(--parchment);
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .option{
+    text-align:left;
+    background: rgba(237,227,199,0.03);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 16px 18px;
+    color: var(--parchment);
+    font-family:'Inter', sans-serif;
+    font-size:15.5px;
+    cursor:pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .option:hover{
+    border-color: var(--gold);
+    background: rgba(201,162,75,0.08);
+  }
+  .option-letter{
+    display:inline-block;
+    width:22px;
+    color: var(--gold);
+    font-weight:600;
+  }
+
+  .end-screen{ text-align:center; }
+  .end-icon{ font-size:52px; margin-bottom:18px; display:block; }
+  .end-title{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size: clamp(28px, 5vw, 38px);
+    margin: 0 0 14px 0;
+  }
+  .end-screen.dead .end-title{ color: var(--ember); }
+  .end-screen.win .end-title{ color: var(--gold); }
+  .end-text{
+    font-size:16px;
+    line-height:1.6;
+    color: rgba(237,227,199,0.75);
+    max-width: 420px;
+    margin: 0 auto 30px auto;
+  }
+
+  .hidden{ display:none; }
+
+  footer{
+    text-align:center;
+    margin-top:26px;
+    font-size:12px;
+    color: rgba(237,227,199,0.3);
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="trail" id="trail"></div>
+
+  <div class="title-screen" id="titleScreen">
+    <div class="eyebrow-mark">Une légende en 13 épreuves</div>
+    <h1>Le Sentier du<br>Trésor Perdu</h1>
+    <p class="intro-text">
+      Fais les bons choix pour trouver la sortie du labyrinthe mais attention à toi, une mauvaise décision et tout est à recommencer. 
+      Bonne chance !
+    </p>
+    <button class="btn primary" id="startBtn">Entrer dans le labyrinthe</button>
+  </div>
+
+  <div class="card hidden" id="questionCard">
+    <div class="step-label" id="stepLabel">Étape 1 / 13</div>
+    <p class="question-text" id="questionText"></p>
+    <div class="options" id="optionsContainer"></div>
+  </div>
+
+  <div class="end-screen dead hidden" id="deadScreen">
+    <span class="end-icon">✕</span>
+    <h2 class="end-title">C'est un cul de sac, dommage.</h2>
+    <p class="end-text" id="deadText">Le chemin se referme derrière toi. Il faut retenter ta chance.</p>
+    <button class="btn" id="retryBtnDead">Reprendre depuis le début</button>
+  </div>
+
+  <div class="end-screen win hidden" id="winScreen">
+    <span class="end-icon">🏆</span>
+    <h2 class="end-title">Tu as trouvé la sortie, bravo !</h2>
+    <p class="end-text">Pour autant, ton calvère ne fait que commencer. Tu n'as pas trouvé le trésoir mais seulement un indice t'y menant :
+    Quelque part dans une collection de savoir, tu trouveras ce qui nous représente. Puisse t'il t'aider à trouver ton chemin.
+    </p>
+    <button class="btn primary" id="retryBtnWin">Rejouer</button>
+  </div>
+
+  <footer></footer>
+</div>
+
+<script>
+const NODES = {
+  start: {
+    question: "✏️ Question 1 (à remplir)",
+    options: [
+      { letter: "A", text: "✏️ Réponse A", next: "q2a" },
+      { letter: "B", text: "✏️ Réponse B", next: "q2b" }
+    ]
+  },
+  q2a: {
+    question: "✏️ Question 2 (à remplir)",
+    options: [
+      { letter: "C", text: "✏️ Réponse C", next: "q4a" },
+      { letter: "D", text: "✏️ Réponse D", next: "dead" }
+    ]
+  },
+  q2b: {
+    question: "✏️ Question 3 (à remplir)",
+    options: [
+      { letter: "E", text: "✏️ Réponse E", next: "dead" },
+      { letter: "F", text: "✏️ Réponse F", next: "q5b" }
+    ]
+  },
+  q4a: {
+    question: "✏️ Question 4 (à remplir)",
+    options: [
+      { letter: "G", text: "✏️ Réponse G", next: "q6a" },
+      { letter: "H", text: "✏️ Réponse H", next: "dead" }
+    ]
+  },
+  q5b: {
+    question: "✏️ Question 5 (à remplir)",
+    options: [
+      { letter: "I", text: "✏️ Réponse I", next: "dead" },
+      { letter: "J", text: "✏️ Réponse J", next: "q7b" }
+    ]
+  },
+  q6a: {
+    question: "✏️ Question 6 (à remplir)",
+    options: [
+      { letter: "K", text: "✏️ Réponse K", next: "dead" },
+      { letter: "L", text: "✏️ Réponse L", next: "q8a" }
+    ]
+  },
+  q7b: {
+    question: "✏️ Question 7 (à remplir)",
+    options: [
+      { letter: "M", text: "✏️ Réponse M", next: "dead" },
+      { letter: "N", text: "✏️ Réponse N", next: "q9b" }
+    ]
+  },
+  q8a: {
+    question: "✏️ Question 8 (à remplir)",
+    options: [
+      { letter: "O", text: "✏️ Réponse O", next: "dead" },
+      { letter: "P", text: "✏️ Réponse P", next: "q10a" }
+    ]
+  },
+  q9b: {
+    question: "✏️ Question 9 (à remplir)",
+    options: [
+      { letter: "Q", text: "✏️ Réponse Q", next: "dead" },
+      { letter: "R", text: "✏️ Réponse R", next: "q11b" }
+    ]
+  },
+  q10a: {
+    question: "✏️ Question 10 (à remplir)",
+    options: [
+      { letter: "S", text: "✏️ Réponse S", next: "dead" },
+      { letter: "T", text: "✏️ Réponse T", next: "q12a" }
+    ]
+  },
+  q11b: {
+    question: "✏️ Question 11 (à remplir)",
+    options: [
+      { letter: "U", text: "✏️ Réponse U", next: "dead" },
+      { letter: "V", text: "✏️ Réponse V", next: "q13b" }
+    ]
+  },
+  q12a: {
+    question: "✏️ Question 12 (à remplir)",
+    options: [
+      { letter: "W", text: "✏️ Réponse W", next: "dead" },
+      { letter: "X", text: "✏️ Réponse X", next: "win" }
+    ]
+  },
+  q13b: {
+    question: "✏️ Question 13 (à remplir)",
+    options: [
+      { letter: "Y", text: "✏️ Réponse Y", next: "dead" },
+      { letter: "Z", text: "✏️ Réponse Z", next: "dead" }
+    ]
+  }
+};
+
+const TOTAL_STEPS = 13;
+
+const titleScreen = document.getElementById('titleScreen');
+const questionCard = document.getElementById('questionCard');
+const deadScreen = document.getElementById('deadScreen');
+const winScreen = document.getElementById('winScreen');
+const stepLabel = document.getElementById('stepLabel');
+const questionText = document.getElementById('questionText');
+const optionsContainer = document.getElementById('optionsContainer');
+const trail = document.getElementById('trail');
+
+let stepCount = 0;
+
+function buildTrail(){
+  trail.innerHTML = '';
+  for(let i=0;i<TOTAL_STEPS;i++){
+    const dot = document.createElement('div');
+    dot.className = 'trail-node';
+    dot.id = 'dot-' + i;
+    trail.appendChild(dot);
+  }
+}
+
+function updateTrail(){
+  for(let i=0;i<TOTAL_STEPS;i++){
+    const dot = document.getElementById('dot-' + i);
+    dot.classList.remove('done','current');
+    if(i < stepCount) dot.classList.add('done');
+    else if(i === stepCount) dot.classList.add('current');
+  }
+}
+
+function showScreen(el){
+  [titleScreen, questionCard, deadScreen, winScreen].forEach(s => s.classList.add('hidden'));
+  el.classList.remove('hidden');
+}
+
+function renderNode(nodeId){
+  const node = NODES[nodeId];
+  updateTrail();
+  stepLabel.textContent = `Étape ${stepCount + 1} / ${TOTAL_STEPS}`;
+  questionText.textContent = node.question;
+  optionsContainer.innerHTML = '';
+
+  node.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="option-letter">${opt.letter}</span>${opt.text}`;
+    btn.addEventListener('click', () => handleChoice(opt.next));
+    optionsContainer.appendChild(btn);
+  });
+
+  showScreen(questionCard);
+}
+
+function handleChoice(next){
+  if(next === 'dead'){
+    showScreen(deadScreen);
+    return;
+  }
+  if(next === 'win'){
+    stepCount = TOTAL_STEPS;
+    updateTrail();
+    showScreen(winScreen);
+    return;
+  }
+  stepCount++;
+  renderNode(next);
+}
+
+function startGame(){
+  stepCount = 0;
+  buildTrail();
+  renderNode('start');
+}
+
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('retryBtnDead').addEventListener('click', startGame);
+document.getElementById('retryBtnWin').addEventListener('click', () => {
+  showScreen(titleScreen);
+});
+
+buildTrail();
+</script>
+
+</body>
+</html>

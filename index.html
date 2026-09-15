@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,13 +9,13 @@
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap');
 
   :root{
-    --bg-deep: #10201A;
-    --bg-panel: #172C23;
+    --bg-deep: #1A3A2C;
+    --bg-panel: #234C3B;
     --parchment: #EDE3C7;
     --gold: #C9A24B;
     --gold-dim: #8B733A;
     --ember: #B4472E;
-    --teal: #3F7D68;
+    --teal: #4F9481;
     --line: rgba(237,227,199,0.14);
     --shadow: rgba(0,0,0,0.45);
   }
@@ -26,7 +27,7 @@
     min-height:100vh;
     background:
       radial-gradient(ellipse at 20% -10%, rgba(201,162,75,0.10), transparent 55%),
-      radial-gradient(ellipse at 100% 110%, rgba(63,125,104,0.14), transparent 55%),
+      radial-gradient(ellipse at 100% 110%, rgba(79,148,129,0.16), transparent 55%),
       var(--bg-deep);
     color: var(--parchment);
     font-family: 'Inter', sans-serif;
@@ -117,12 +118,6 @@
     from{ opacity:0; transform: translateY(14px); }
     to{ opacity:1; transform: translateY(0); }
   }
-  .step-label{
-    font-family:'Fraunces', serif;
-    font-size:14px;
-    color: var(--gold-dim);
-    margin-bottom:10px;
-  }
   .question-text{
     font-family:'Fraunces', serif;
     font-size: clamp(20px, 3.4vw, 26px);
@@ -189,11 +184,11 @@
 <body>
 
 <div class="stage">
-  <div class="trail" id="trail"></div>
+  <div class="trail hidden" id="trail"></div>
 
   <div class="title-screen" id="titleScreen">
     <div class="eyebrow-mark">Qu'importe l'issue du chemin quand seul compte le chemin parcouru.</div>
-    <h1>Le Sentier du<br>Trésor Perdu</h1>
+    <h1>Le Labyrinthe de l'Arbre Binaire de Décisions Sacrées</h1>
     <p class="intro-text">
       Fais les bons choix pour trouver la sortie du labyrinthe mais attention à toi, une mauvaise décision et tout est à recommencer. 
       Bonne chance !
@@ -202,7 +197,6 @@
   </div>
 
   <div class="card hidden" id="questionCard">
-    <div class="step-label" id="stepLabel">Étape 1 / 13</div>
     <p class="question-text" id="questionText"></p>
     <div class="options" id="optionsContainer"></div>
   </div>
@@ -229,94 +223,94 @@
 <script>
 const NODES = {
   start: {
-    question: "✏️ Question 1 (à remplir)",
+    question: "Question 1",
     options: [
-      { letter: "A", text: "✏️ Réponse A", next: "q2a" },
-      { letter: "B", text: "✏️ Réponse B", next: "q2b" }
+      { letter: "A", text: "Paris", next: "q2a" },
+      { letter: "B", text: "Asuncion", next: "q2b" }
     ]
   },
   q2a: {
-    question: "✏️ Question 2 (à remplir)",
+    question: "Question 2",
     options: [
-      { letter: "C", text: "✏️ Réponse C", next: "q4a" },
-      { letter: "D", text: "✏️ Réponse D", next: "dead" }
+      { letter: "C", text: "Cuisiner à deux", next: "q4a" },
+      { letter: "D", text: "Cuisiner pour l'autre", next: "dead" }
     ]
   },
   q2b: {
-    question: "✏️ Question 3 (à remplir)",
+    question: "Question 3",
     options: [
-      { letter: "E", text: "✏️ Réponse E", next: "dead" },
-      { letter: "F", text: "✏️ Réponse F", next: "q5b" }
+      { letter: "E", text: "M&M's crispy", next: "dead" },
+      { letter: "F", text: "Schokonbons", next: "q5b" }
     ]
   },
   q4a: {
-    question: "✏️ Question 4 (à remplir)",
+    question: "Question 4",
     options: [
-      { letter: "G", text: "✏️ Réponse G", next: "q6a" },
-      { letter: "H", text: "✏️ Réponse H", next: "dead" }
+      { letter: "G", text: "Sieste en câlin", next: "q6a" },
+      { letter: "H", text: "Nuit en câlin", next: "dead" }
     ]
   },
   q5b: {
-    question: "✏️ Question 5 (à remplir)",
+    question: "Question 5",
     options: [
-      { letter: "I", text: "✏️ Réponse I", next: "dead" },
-      { letter: "J", text: "✏️ Réponse J", next: "q7b" }
+      { letter: "I", text: "Tractions lestées", next: "dead" },
+      { letter: "J", text: "Dips lestées", next: "q7b" }
     ]
   },
   q6a: {
-    question: "✏️ Question 6 (à remplir)",
+    question: "Question 6",
     options: [
-      { letter: "K", text: "✏️ Réponse K", next: "dead" },
-      { letter: "L", text: "✏️ Réponse L", next: "q8a" }
+      { letter: "K", text: "Petit chat mignon", next: "dead" },
+      { letter: "L", text: "Gros doggy mignon", next: "q8a" }
     ]
   },
   q7b: {
-    question: "✏️ Question 7 (à remplir)",
+    question: "Question 7",
     options: [
-      { letter: "M", text: "✏️ Réponse M", next: "dead" },
-      { letter: "N", text: "✏️ Réponse N", next: "q9b" }
+      { letter: "M", text: "Être ronchonchon", next: "dead" },
+      { letter: "N", text: "Ronchonchonner", next: "q9b" }
     ]
   },
   q8a: {
-    question: "✏️ Question 8 (à remplir)",
+    question: "Question 8",
     options: [
-      { letter: "O", text: "✏️ Réponse O", next: "dead" },
-      { letter: "P", text: "✏️ Réponse P", next: "q10a" }
+      { letter: "O", text: "Regarder les étoiles", next: "dead" },
+      { letter: "P", text: "Regarder les nuages", next: "q10a" }
     ]
   },
   q9b: {
-    question: "✏️ Question 9 (à remplir)",
+    question: "Question 9",
     options: [
-      { letter: "Q", text: "✏️ Réponse Q", next: "dead" },
-      { letter: "R", text: "✏️ Réponse R", next: "q11b" }
+      { letter: "Q", text: "Réponse Q", next: "dead" },
+      { letter: "R", text: "Réponse R", next: "q11b" }
     ]
   },
   q10a: {
-    question: "✏️ Question 10 (à remplir)",
+    question: "Question 10 (à remplir)",
     options: [
-      { letter: "S", text: "✏️ Réponse S", next: "dead" },
-      { letter: "T", text: "✏️ Réponse T", next: "q12a" }
+      { letter: "S", text: "Réponse S", next: "dead" },
+      { letter: "T", text: "Réponse T", next: "q12a" }
     ]
   },
   q11b: {
-    question: "✏️ Question 11 (à remplir)",
+    question: "Question 11 (à remplir)",
     options: [
-      { letter: "U", text: "✏️ Réponse U", next: "dead" },
-      { letter: "V", text: "✏️ Réponse V", next: "q13b" }
+      { letter: "U", text: "Réponse U", next: "dead" },
+      { letter: "V", text: "Réponse V", next: "q13b" }
     ]
   },
   q12a: {
-    question: "✏️ Question 12 (à remplir)",
+    question: "Question 12",
     options: [
-      { letter: "W", text: "✏️ Réponse W", next: "dead" },
-      { letter: "X", text: "✏️ Réponse X", next: "win" }
+      { letter: "W", text: "Si c'était à refaire, jamais", next: "dead" },
+      { letter: "X", text: "Si c'était à refaire, je le ferai", next: "win" }
     ]
   },
   q13b: {
-    question: "✏️ Question 13 (à remplir)",
+    question: "Question 13",
     options: [
-      { letter: "Y", text: "✏️ Réponse Y", next: "dead" },
-      { letter: "Z", text: "✏️ Réponse Z", next: "dead" }
+      { letter: "Y", text: "Ensemble à Barcelone", next: "dead" },
+      { letter: "Z", text: "Ensemble à Paris", next: "dead" }
     ]
   }
 };
@@ -327,7 +321,6 @@ const titleScreen = document.getElementById('titleScreen');
 const questionCard = document.getElementById('questionCard');
 const deadScreen = document.getElementById('deadScreen');
 const winScreen = document.getElementById('winScreen');
-const stepLabel = document.getElementById('stepLabel');
 const questionText = document.getElementById('questionText');
 const optionsContainer = document.getElementById('optionsContainer');
 const trail = document.getElementById('trail');
@@ -356,12 +349,16 @@ function updateTrail(){
 function showScreen(el){
   [titleScreen, questionCard, deadScreen, winScreen].forEach(s => s.classList.add('hidden'));
   el.classList.remove('hidden');
+  if(el === titleScreen){
+    trail.classList.add('hidden');
+  } else {
+    trail.classList.remove('hidden');
+  }
 }
 
 function renderNode(nodeId){
   const node = NODES[nodeId];
   updateTrail();
-  stepLabel.textContent = `Étape ${stepCount + 1} / ${TOTAL_STEPS}`;
   questionText.textContent = node.question;
   optionsContainer.innerHTML = '';
 
